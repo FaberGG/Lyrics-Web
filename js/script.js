@@ -1,4 +1,6 @@
 let contents = " " ;
+let lyricstag = document.getElementById("letra");
+const audio = document.getElementById("audio");
 
 function readMultipleFiles(evt) {
     let files = evt.target.files;
@@ -37,25 +39,18 @@ function next() {
         if (allTextLines[i].search(/^(\[)(\d*)(:)(.*)(\])(.*)/i) >=0 ) {
             line = allTextLines[i].match(/^(\[)(\d*)(:)(.*)(\])(.*)/i);
             tim[i] = parseInt(line[2]) * 60 + parseInt(line[4]);
-            lyrics[i] = line[5];
+            lyrics[i] = line[6];
         }
     }
 }
 
-
 function cargarAudio({target}){
     const urlObj = URL.createObjectURL(target.files[0]);
-    const audio = document.createElement("audio");
 
     audio.addEventListener("load", () =>{
         URL.revokeObjectURL(urlObj);
     });
-
-    document.body.appendChild(audio);
-
-    audio.controls = "true";
-
     audio.src = urlObj;
-
 }
+
 
