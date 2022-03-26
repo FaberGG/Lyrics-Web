@@ -1,6 +1,7 @@
 let contents = " " ;
 let lyricstag = document.getElementById("letra");
 const audio = document.getElementById("audio");
+audio.addEventListener("play" , sincronizarCancion);
 
 function readMultipleFiles(evt) {
     let files = evt.target.files;
@@ -26,8 +27,9 @@ document.getElementById("lrc-file").addEventListener("change", readMultipleFiles
 
 let allTextLines = " " ;
 let lyrics = [];
-var tim = [] ;
-var line = " ";
+let llave = [];
+let tim = [] ;
+let line = " ";
 
 function processData(allText) {
     allTextLines = allText.split(/\r\n|\n/);
@@ -39,6 +41,7 @@ function next() {
         if (allTextLines[i].search(/^(\[)(\d*)(:)(.*)(\])(.*)/i) >=0 ) {
             line = allTextLines[i].match(/^(\[)(\d*)(:)(.*)(\])(.*)/i);
             tim[i] = parseInt(line[2]) * 60 + parseInt(line[4]);
+            llave[i] = line[5];
             lyrics[i] = line[6];
         }
     }
@@ -53,4 +56,15 @@ function cargarAudio({target}){
     audio.src = urlObj;
 }
 
+
+function sincronizarCancion(){
+    
+    for (let i = 0; i < tim.length; i++) {
+        
+        if (Math.floor(audio.currentTime) ==tim[i]) {
+            lyricstag.innerText = lyrics[i];
+        }
+    }
+
+}
 
